@@ -1,7 +1,7 @@
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, decorators
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, HttpResponse
 from accounts.forms import LoginForm
-
 
 
 def login_view(request):
@@ -36,9 +36,14 @@ def login_view(request):
         else:
             form = LoginForm()
             print(f'\n\nUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU\n'
-              f'LoginForm().is_valid() - {form}'
-              f'\n\n\nUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU\n\n\n')
-        return render(request, 'accounts/login.html', {'form': form,})
+                  f'LoginForm().is_valid() - {form}'
+                  f'\n\n\nUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU\n\n\n')
+        return render(request, 'accounts/login.html', {'form': form, })
     else:
         return HttpResponse('You already authenticated')
 
+# как мы сможем попасть на запрашиваемую страницу после атентификации?
+# с помощью поля <input type="hidden" name="next" value="{{next}}"/> в html форме login
+@login_required
+def dashboard_view(request):
+    return render(request, 'accounts/dashboard.html', {'section': 'dashboard'})
