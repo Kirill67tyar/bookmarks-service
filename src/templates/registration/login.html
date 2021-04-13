@@ -11,10 +11,11 @@
 <form action="{% url 'accounts:login' %}" method="POST">
     {{form.as_p}}
     {% csrf_token %}
-<!--    строка ниже (<input ...>) нужна, чтобы попадать на адрес запрашиваемой страницы,
-ведь мы используем декоратор @login_required-->
+    <!--    строка ниже (<input ...>) нужна, чтобы попадать на адрес запрашиваемой страницы,
+    ведь мы используем декоратор @login_required-->
     <input type="hidden" name="next" value="{{next}}"/>
     <p><input type="submit" value="Log in"></p>
 </form>
-<p><a href="{% url 'accounts:password_reset' %}">Forgotten your password?</a></p>
+<p>You have not account? <a href="{% url 'accounts:register' %}">Register</a></p>
+<p>Forgotten your password? <a href="{% url 'accounts:password_reset' %}">Reset password</a></p>
 {% endblock %}

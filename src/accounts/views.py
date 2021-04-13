@@ -1,7 +1,8 @@
 from django.contrib.auth import authenticate, login, logout, decorators
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, HttpResponse
-from accounts.forms import LoginForm
+from accounts.forms import LoginForm, RegisterModelForm, ProfileEditModelForm, UserEditModelForm
+from accounts.models import Profile
 
 
 def login_view(request):
@@ -47,3 +48,40 @@ def login_view(request):
 @login_required
 def dashboard_view(request):
     return render(request, 'accounts/dashboard.html', {'section': 'dashboard'})
+
+
+def register_view(request):
+    if request.method == 'POST':
+        form = RegisterModelForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            new_user = form.save(commit=False)
+            new_user.set_password(cd['password'])
+            Profile.objects.create(user=new_user)
+            new_user.save()
+            return render(request, 'accounts/register_done.html', {'new_user': new_user,})
+    else:
+        form = RegisterModelForm()
+    return render(request, 'accounts/register.html', {'form': form,})
+
+@login_required
+def edit_view(request):
+    if request.method == 'POST':
+        print(f'\n\n)))))))))))))))))))))))))))\n'
+              f'request.POST - {request.POST}'
+              f'\n))))))))))))))))))))))))))))\n\n')
+        user_form = UserEditModelForm(instance=request.user, data=request.POST)
+        profile_form = ProfileEditModelForm(instance=request.user.profile, data=request.POST, files=request.FILES)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            return render(request=request, template_name='accounts/edit_done.html', context={})
+    else:
+        user_form = UserEditModelForm(instance=request.user)
+        profile_form = ProfileEditModelForm(instance=request.user.profile)
+    context = {
+        'user_form': user_form,
+        'profile_form': profile_form,
+    }
+    return render(request=request, template_name='accounts/edit.html', context=context)
+

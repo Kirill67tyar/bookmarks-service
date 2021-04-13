@@ -162,4 +162,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
+# email backend, который позвляет нам вместо почты использовать консоль
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+
+# MEDIA SETTINGS----------------------------
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
