@@ -7,12 +7,12 @@ app_name = 'accounts'
 
 urlpatterns = [
     path('', dashboard_view, name='dashboard'),
-    # path('login/', login_view, name='login'),
+    path('login/', login_view, name='login'),
     path('register/', register_view, name='register'),
     path('edit/', edit_view, name='edit'),
 
     # Аутентификация из коробки ----------------------------------
-    path('login/', auth_views.LoginView.as_view(), name='login'),
+    # path('login/', auth_views.LoginView.as_view(), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
 
     # Просто смена пароля -------------------------------------
@@ -29,6 +29,8 @@ urlpatterns = [
     # они связаны с встроенными обработчиками из коробки
     # и обрати внимание, что в settings мы подключили
     # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+    # это для того, чтобы посылать письма не на почту а в консоль
+    # а так, надо конечно настраивать почту
 
 
 ]

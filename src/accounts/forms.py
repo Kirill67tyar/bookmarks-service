@@ -1,11 +1,16 @@
 from django.contrib.auth.models import User
-from django.forms import (Form, ModelForm, CharField, PasswordInput, ValidationError)
+from django.forms import (Form, ModelForm, CharField, PasswordInput, ValidationError, TextInput)
 from accounts.models import Profile
 
+attrs = {
+    'attrs': {
+        'placeholder': 'Enter username or email'
+    }
+}
 
 class LoginForm(Form):
 
-    username = CharField(required=True, label='Имя пользователя')
+    username = CharField(required=True, label='Имя пользователя или email', widget=TextInput(**attrs))
     password = CharField(required=True, label='Пароль', widget=PasswordInput)
 
 

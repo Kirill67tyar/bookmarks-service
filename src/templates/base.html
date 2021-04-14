@@ -10,6 +10,11 @@
 <div id="header">
     {% include '_inc/header.html' %}
 </div>
+
+{% if messages %}
+{% include '_inc/messages.html' %}
+{% endif %}
+
 <div id="content">
     {% block content %}
     Some content

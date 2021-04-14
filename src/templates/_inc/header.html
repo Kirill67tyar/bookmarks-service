@@ -16,7 +16,7 @@
 <span class="user">
     {% if request.user.is_authenticated %}
     Hello {{request.user.username}}&nbsp;|&nbsp;
-    <a href="{% url 'accounts:logout' %}">Logout</a>
+    <a href="{% url 'accounts:logout' %}">Exit</a>
     {% else %}
     <a href="{% url 'accounts:login' %}">Log-in</a>
     {% endif %}

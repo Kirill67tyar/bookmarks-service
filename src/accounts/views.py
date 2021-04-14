@@ -1,6 +1,9 @@
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, decorators
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, redirect
+from django.urls import reverse
+
 from accounts.forms import LoginForm, RegisterModelForm, ProfileEditModelForm, UserEditModelForm
 from accounts.models import Profile
 
@@ -29,7 +32,7 @@ def login_view(request):
                 if user:
                     if user.is_active:
                         login(request, user)
-                        return HttpResponse('Authenticated was successfully')
+                        return redirect(reverse('accounts:dashboard'))
                     else:
                         return HttpResponse('User is not active')
                 else:
@@ -75,7 +78,10 @@ def edit_view(request):
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
+            messages.success(request=request, message='Profile updated successfully')
             return render(request=request, template_name='accounts/edit_done.html', context={})
+        else:
+            messages.error(request=request, message='Error updating your profile')
     else:
         user_form = UserEditModelForm(instance=request.user)
         profile_form = ProfileEditModelForm(instance=request.user.profile)
