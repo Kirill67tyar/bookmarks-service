@@ -69,25 +69,28 @@ def register_view(request):
 
 @login_required
 def edit_view(request):
-    if request.method == 'POST':
-        print(f'\n\n)))))))))))))))))))))))))))\n'
-              f'request.POST - {request.POST}'
-              f'\n))))))))))))))))))))))))))))\n\n')
-        user_form = UserEditModelForm(instance=request.user, data=request.POST)
-        profile_form = ProfileEditModelForm(instance=request.user.profile, data=request.POST, files=request.FILES)
-        if user_form.is_valid() and profile_form.is_valid():
-            user_form.save()
-            profile_form.save()
-            messages.success(request=request, message='Profile updated successfully')
-            return render(request=request, template_name='accounts/edit_done.html', context={})
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            print(f'\n\n)))))))))))))))))))))))))))\n'
+                  f'request.POST - {request.POST}'
+                  f'\n))))))))))))))))))))))))))))\n\n')
+            user_form = UserEditModelForm(instance=request.user, data=request.POST)
+            profile_form = ProfileEditModelForm(instance=request.user.profile, data=request.POST, files=request.FILES)
+            if user_form.is_valid() and profile_form.is_valid():
+                user_form.save()
+                profile_form.save()
+                messages.success(request=request, message='Profile updated successfully')
+                return render(request=request, template_name='accounts/edit_done.html', context={})
+            else:
+                messages.error(request=request, message='Error updating your profile')
         else:
-            messages.error(request=request, message='Error updating your profile')
+            user_form = UserEditModelForm(instance=request.user)
+            profile_form = ProfileEditModelForm(instance=request.user.profile)
+        context = {
+            'user_form': user_form,
+            'profile_form': profile_form,
+        }
+        return render(request=request, template_name='accounts/edit.html', context=context)
     else:
-        user_form = UserEditModelForm(instance=request.user)
-        profile_form = ProfileEditModelForm(instance=request.user.profile)
-    context = {
-        'user_form': user_form,
-        'profile_form': profile_form,
-    }
-    return render(request=request, template_name='accounts/edit.html', context=context)
+        return redirect(reverse('accounts:login'))
 
