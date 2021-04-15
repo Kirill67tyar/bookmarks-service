@@ -31,3 +31,24 @@ if settings.DEBUG:
 
 # bookmarks_admin
 # bookmarks_admin@yandex.ru
+# mysite.com:8000
+
+# --------------------------facebook application:
+# http://mysite.com:8000/
+# bookmarks
+# ID приложения: 503791577470729
+# https://developers.facebook.com/apps/503791577470729/settings/basic/
+
+# http://mysite.com:8000/social-auth/complete/facebook/
+# https://mysite.com:8000/social-auth/complete/facebook/
+
+
+# --------------------------google application:
+# nameappication - MyProject61365
+
+
+# for sslserver (HTTPS):
+# python manage.py runsslserver
+# https://github.com/Kirill67tyar/django-sslserver
+
+

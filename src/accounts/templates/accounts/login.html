@@ -9,4 +9,16 @@
     {% csrf_token %}
     <p><input type="submit" value="Log in"></p>
 </form>
+<div class="social">
+    <ul>
+        <li class="facebook">
+            <a href="{% url 'social:begin' 'facebook' %}">Signin with Facebook</a>
+        </li>
+    </ul>
+    <ul>
+        <li class="google">
+            <a href="{% url 'social:begin' 'google-oauth2' %}">Signin with Google</a>
+        </li>
+    </ul>
+</div>
 {% endblock %}

@@ -18,4 +18,16 @@
 </form>
 <p>You have not account? <a href="{% url 'accounts:register' %}">Register</a></p>
 <p>Forgotten your password? <a href="{% url 'accounts:password_reset' %}">Reset password</a></p>
+<div class="social">
+    <ul>
+        <li class="facebook">
+            <a href="{% url 'social:begin' 'facebook' %}">Signin with Facebook</a>
+        </li>
+    </ul>
+    <ul>
+        <li class="google">
+            <a href="{% url 'social:begin' 'google-oauth2' %}">Signin with Google</a>
+        </li>
+    </ul>
+</div>
 {% endblock %}
