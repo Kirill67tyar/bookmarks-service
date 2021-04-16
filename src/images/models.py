@@ -33,3 +33,6 @@ class Image(models.Model):
             self.slug = slugify(my_custom_slugify(str(self.title)))
         super(Image, self).save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        return self.url
+

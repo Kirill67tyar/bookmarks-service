@@ -1,5 +1,6 @@
 from django.contrib.auth import views # обработики аутентификации из коробки django
 from django.contrib.auth.backends import ModelBackend
+from django.http import HttpRequest
 from django.middleware.security import SecurityMiddleware
 from social_core.backends.facebook import FacebookOAuth2
 from social_core.backends.twitter import TwitterOAuth
@@ -17,7 +18,7 @@ from django.db import models
 
 
 
-
+# HttpRequest = HttpRequest
 
 'django.contrib.auth.backends.ModelBackend'
 'social_core.backends.facebook.FacebookOAuth2'
@@ -82,3 +83,30 @@ MIDDLEWARE = [
 # Для полей с unique=True или ForeignKey индексы создаются автоматически
 # на SlugField (возможно!) тоже формируется автоматически db_index
 # для определения составного индекса можно использовать Meta.index_together (хз что такое)
+
+# Зачем нужен commit=False в save() модельной формы?
+# это позволяет создать объект экземпляр модели без непосредственного сохранения его в бд (SQL запроса в бд)
+# это как если создать экземпляр модели но не сохранять ее.
+
+# Кстати, request - экземпляр класса HTTPRequest:
+# from django.http import HttpRequest
+
+
+
+
+# Как сделать строку словарем (строка с синтаксисом python словаря, не json):
+# import ast
+# s='{(43, 7): 1, (38, 7): 1}'
+# d=dict(ast.literal_eval(s))
+
+
+
+
+"""
+Web Interface                 http://127.0.0.1:4040
+Forwarding                    http://83b42dc00ec9.ngrok.io -> http://localhost:8000
+Forwarding                    https://83b42dc00ec9.ngrok.io -> http://localhost:8000
+"""
+
+# заходишь в прогу ngok
+# набираешь в консоли ngrok http 8000
