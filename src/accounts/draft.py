@@ -102,11 +102,20 @@ MIDDLEWARE = [
 
 
 
-"""
-Web Interface                 http://127.0.0.1:4040
-Forwarding                    http://83b42dc00ec9.ngrok.io -> http://localhost:8000
-Forwarding                    https://83b42dc00ec9.ngrok.io -> http://localhost:8000
-"""
 
-# заходишь в прогу ngok
-# набираешь в консоли ngrok http 8000
+
+# Что нужно делать, чтобы bookmarklet работал:
+# 1) заходишь в прогу ngok (C:\Users\User\Desktop\Job\ngrok-stable-windows-386)
+# 2) набираешь в консоли ngrok http 8000
+# 3) полуаешь нечтно такое:
+"""
+    Web Interface                 http://127.0.0.1:4040
+    Forwarding                    http://83b42dc00ec9.ngrok.io -> http://localhost:8000
+    Forwarding                    https://83b42dc00ec9.ngrok.io -> http://localhost:8000
+"""
+# 4) меняешь старый хост на новый полуенный, в 3 местах в документе:
+# - settings.py (ALLOWED_HOSTS)
+# - images/templates/bookmarklet_launcher.js
+# - static/js/bookmarklet.js
+# 5) ...
+# 6) PROFIT!!!

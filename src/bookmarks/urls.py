@@ -52,5 +52,25 @@ if settings.DEBUG:
 # python manage.py runsslserver
 # https://github.com/Kirill67tyar/django-sslserver
 
+
+
+# -----------------Что нужно делать, чтобы bookmarklet работал:
+
+# 1) заходишь в прогу ngok (C:\Users\User\Desktop\Job\ngrok-stable-windows-386)
+# 2) набираешь в консоли ngrok http 8000
+# 3) полуаешь нечтно такое:
+"""
+    Web Interface                 http://127.0.0.1:4040
+    Forwarding                    http://83b42dc00ec9.ngrok.io -> http://localhost:8000
+    Forwarding                    https://83b42dc00ec9.ngrok.io -> http://localhost:8000
+"""
+# 4) меняешь старый хост на новый полученный, в 3 местах в проекте:
+# - settings.py (ALLOWED_HOSTS)
+# - images/templates/bookmarklet_launcher.js
+# - static/js/bookmarklet.js
+# 5) ...
+# 6) PROFIT!!!
+
 # https://83b42dc00ec9.ngrok.io/accounts/login/
+# https://438e2043a0d4.ngrok.io/accounts/login/
 
