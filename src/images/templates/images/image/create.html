@@ -3,6 +3,7 @@
 
 {% block content %}
 <h1>Bookmark an image</h1>
+<!--request.GET.url - так мы достаем ключ url из QueryDict, который формируется из get параметров-->
 <img src="{{request.GET.url}}" class="image-preview">
 <form action="." method="POST">
     {{form.as_p}}

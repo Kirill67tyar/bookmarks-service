@@ -119,3 +119,53 @@ MIDDLEWARE = [
 # - static/js/bookmarklet.js
 # 5) ...
 # 6) PROFIT!!!
+
+
+
+
+
+# и экземпляров класса FileField и ImageField есть огромное кол-во своих методов:
+# как то: save(), url() ...
+# Это связано со спецификой работы с файлами в django
+# Вот все эти методы
+"""
+chunks
+close
+closed
+delete
+encoding
+field
+file
+fileno
+flush
+height
+instance
+isatty
+multiple_chunks
+name
+newlines
+open
+path
+read
+readable
+readinto
+readline
+readlines
+save
+seek
+seekable
+size
+storage
+tell
+truncate
+url
+width
+writable
+write
+writelines
+"""
+
+# тэг with в шаблонах - хороший способ избежать многократного выисления
+# queryset'ов (делать дополнительные SQL запросы)
+# но для него нужен закрывающий тег {% endwith %}
+# см. как работает в image/detail.html

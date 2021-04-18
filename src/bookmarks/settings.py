@@ -32,7 +32,7 @@ ALLOWED_HOSTS = [
     'mysite.com',
     'localhost',
     '127.0.0.1',
-    '438e2043a0d4.ngrok.io',
+    'f329b1815187.ngrok.io',
 ]
 
 
@@ -49,9 +49,11 @@ INSTALLED_APPS = [
     'images.apps.ImagesConfig',
     'social_django',
     'sslserver',# for runsslserver(https)
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -198,3 +200,5 @@ SOCIAL_AUTH_FACEBOOK_SCOPE = ['email',]
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
 
+
+INTERNAL_IPS = ['127.0.0.1',]

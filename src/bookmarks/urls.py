@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+import debug_toolbar
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,6 +28,7 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns.append(path('__debug__/', include(debug_toolbar.urls)),)
 # по какой-то причине функция static подходит только для локальных серверов
 # ее крайне нежелательно использовать в продакшене (а может и не получится)
 
@@ -73,4 +75,5 @@ if settings.DEBUG:
 
 # https://83b42dc00ec9.ngrok.io/accounts/login/
 # https://438e2043a0d4.ngrok.io/accounts/login/
+# https://f329b1815187.ngrok.io/accounts/login/
 
