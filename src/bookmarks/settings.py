@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'social_django',
     'sslserver',# for runsslserver(https)
     'debug_toolbar',
+    'sorl.thumbnail',
 ]
 
 MIDDLEWARE = [

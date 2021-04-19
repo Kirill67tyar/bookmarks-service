@@ -10,9 +10,9 @@ from images.utils import my_custom_slugify
 
 def check_etxtension(url):
     valid_extensions = ['jpg', 'jpeg', ]
-    image_format = url.rsplit('.', 1)[1].lower()
+    image_extension = url.rsplit('.', 1)[1].lower()
     # image_format = url.split('.')[-1].lower()
-    if image_format not in valid_extensions:
+    if image_extension not in valid_extensions:
         raise ValidationError('The given url does not match valid image extensions (jpg, jpeg)')
     return url
 
@@ -41,9 +41,9 @@ class ImageCreateModelForm(ModelForm):
         url = self.cleaned_data.get('url')
         valid_extensions = ['jpg', 'jpeg',]
         # get_extension - моя кастомная функция, см. выше
-        image_format = get_extension(url=url)
-        # image_format = url.split('.')[-1].lower()
-        if image_format not in valid_extensions:
+        image_extension = get_extension(url=url)
+        # image_extension = url.split('.')[-1].lower()
+        if image_extension not in valid_extensions:
             raise ValidationError('The given url does not match valid image extensions (jpg, jpeg)')
         return url
 
