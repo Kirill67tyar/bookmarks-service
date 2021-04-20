@@ -7,7 +7,6 @@ from django.urls import reverse
 from accounts.forms import LoginForm, RegisterModelForm, ProfileEditModelForm, UserEditModelForm
 from accounts.models import Profile
 
-
 def login_view(request):
     if not request.user.is_authenticated:
         if request.method == 'POST':
