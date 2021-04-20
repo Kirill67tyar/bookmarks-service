@@ -100,7 +100,9 @@ MIDDLEWARE = [
 # from django.http import JsonResponse
 # JsonResponse - сериализует словарь в JSON объект И возвращает HTTP ответ с хэдером type: application/json
 # с этим Json'ом в body
-
+# зайди http://127.0.0.1:8000/images/experiment/
+# контроллер по этому урлу покажет что делает JsonResponse - преобразует объект python в json объект
+# возможно ее можно неплохо использовать в rest API
 
 # Как сделать строку словарем (строка с синтаксисом python словаря, не json):
 # import ast

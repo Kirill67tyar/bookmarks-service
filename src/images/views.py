@@ -1,7 +1,8 @@
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_POST
 from django.db.models import Count
 from django.shortcuts import render, redirect, reverse, get_object_or_404
@@ -85,3 +86,32 @@ def like_view(request):
 
 # some-picture
 # bookmarklet_launcher.js
+
+@login_required
+def list_view(request):
+    qs = Image.objects.all()#.filter(user=request.user)
+    paginator = Paginator(qs, 8)
+    num_page = request.GET.get('page')
+    try:
+        images = paginator.page(num_page)
+    except PageNotAnInteger:
+        images = paginator.page(1)
+    except EmptyPage:
+        if request.is_ajax():
+            return HttpResponse('')
+        else:
+            images = paginator.page(paginator.num_pages)
+    context = {
+        'section': 'images',
+        'images': images,
+    }
+    if request.is_ajax():
+        template_name = 'images/image/list_ajax.html'
+    else:
+        template_name = 'images/image/list.html'
+    return render(request, template_name=template_name, context=context)
+
+
+
+def experiment(request):
+    return JsonResponse({'cheking': 'it works'})
