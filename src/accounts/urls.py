@@ -1,7 +1,11 @@
 from django.contrib.auth import views as auth_views
 from django.urls import path
-from accounts.views import login_view, dashboard_view, register_view, edit_view
+from accounts.views import (login_view, dashboard_view,
+                            register_view, edit_view,
+                            user_list_view, user_detail_view,
+                            user_follow_view)
 from accounts.utils import (MyPasswordChangeView, MyPasswordResetConfirmView, MyPasswordResetView)
+
 app_name = 'accounts'
 
 
@@ -10,6 +14,10 @@ urlpatterns = [
     path('login/', login_view, name='login'),
     path('register/', register_view, name='register'),
     path('edit/', edit_view, name='edit'),
+
+    path('users/', user_list_view, name='user_list'),
+    path('users/follow/', user_follow_view, name='user_follow'),
+    path('users/<str:username>/', user_detail_view, name='user_detail'),
 
     # Аутентификация из коробки ----------------------------------
     # path('login/', auth_views.LoginView.as_view(), name='login'),

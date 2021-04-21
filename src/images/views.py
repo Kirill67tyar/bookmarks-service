@@ -84,8 +84,7 @@ def like_view(request):
     return JsonResponse({'status': 'ok'})
 
 
-# some-picture
-# bookmarklet_launcher.js
+
 
 @login_required
 def list_view(request):

@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+from django.urls import reverse_lazy
 
 load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -47,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'images.apps.ImagesConfig',
+    'actions.apps.ActionsConfig',
     'social_django',
     'sslserver',# for runsslserver(https)
     'debug_toolbar',
@@ -69,15 +71,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'bookmarks.urls'
 
 
-# CUSTOM LOGIN--------------------------------------
-LOGIN_REDIRECT_URL = 'accounts:dashboard'
-LOGIN_URL = 'accounts:login'
-LOGOUT_URL = 'accounts:logout'
-# # or
-# LOGIN_REDIRECT_URL = 'dashboard'
-# LOGIN_URL = 'login'
-# LOGOUT_URL = 'logout'
-# CUSTOM LOGIN--------------------------------------
+
 
 
 TEMPLATES = [
@@ -185,6 +179,19 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 
 
+
+# CUSTOM LOGIN--------------------------------------
+LOGIN_REDIRECT_URL = 'accounts:dashboard'
+LOGIN_URL = 'accounts:login'
+LOGOUT_URL = 'accounts:logout'
+# # or
+# LOGIN_REDIRECT_URL = 'dashboard'
+# LOGIN_URL = 'login'
+# LOGOUT_URL = 'logout'
+# CUSTOM LOGIN--------------------------------------
+
+
+
 # AUTHENTICATION SETTINGS----------------------------
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
@@ -201,5 +208,12 @@ SOCIAL_AUTH_FACEBOOK_SCOPE = ['email',]
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
 
+# добавляем динамически в модель User метод get_absolute_url() - '/accounts/users/<username>/'
+ABSOLUTE_URL_OVERRIDES = {
+    'auth.user': lambda user: reverse_lazy('accounts:user_detail', kwargs={'username': user.username}),
+}
 
 INTERNAL_IPS = ['127.0.0.1',]
+
+
+THUMBNAIL_DEBUG = True

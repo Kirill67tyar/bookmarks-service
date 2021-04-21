@@ -1,11 +1,19 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout, decorators
+from django.contrib.auth import authenticate, login, logout, decorators, get_user_model
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, HttpResponse, redirect
-from django.urls import reverse
+from django.contrib.auth.models import User as U
+from django.http import JsonResponse
+from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
+from django.urls import reverse, reverse_lazy
+from django.views.decorators.http import require_POST
 
 from accounts.forms import LoginForm, RegisterModelForm, ProfileEditModelForm, UserEditModelForm
-from accounts.models import Profile
+from accounts.models import Profile, Contact
+
+from common.decorators import ajax_required
+
+
+User = get_user_model()
 
 def login_view(request):
     if not request.user.is_authenticated:
@@ -92,4 +100,53 @@ def edit_view(request):
         return render(request=request, template_name='accounts/edit.html', context=context)
     else:
         return redirect(reverse('accounts:login'))
+
+
+
+@login_required
+def user_list_view(request):
+    users = User.objects.filter(is_active=True)
+    context = {
+        'users': users,
+        'section': 'people',
+    }
+    return render(request, 'accounts/user/user_list.html', context=context)
+    # return render(request, 'accounts/user/exp1.html', context=context)
+
+
+
+@login_required
+def user_detail_view(request, username):
+    kwargs = {
+        'klass': User,
+        'username': username,
+        'is_active': True,
+    }
+    user = get_object_or_404(**kwargs)
+    context = {
+        'user': user,
+        'section': 'people',
+        'image': user.profile.photo,
+    }
+    return render(request, 'accounts/user/user_detail.html', context=context)
+    # return render(request, 'accounts/user/exp2.html', context=context)
+
+@ajax_required
+@require_POST
+@login_required
+def user_follow_view(request):
+    user_id = request.POST.get('id')
+    action = request.POST.get('action')
+    if user_id and action:
+        try:
+            user = User.objects.get(pk=user_id)
+            if action == 'follow':
+                Contact.objects.get_or_create(user_from=request.user, user_to=user)
+            else:
+                Contact.objects.filter(user_from=request.user, user_to=user).delete()
+        except User.DoesNotExist:
+            pass
+    return JsonResponse({'status': 'ok'})
+
+
 

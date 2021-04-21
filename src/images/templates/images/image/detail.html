@@ -24,6 +24,9 @@
         <a href="#" data-id="{{image.pk}}"
            data-action="{% if request.user in users_like %}un{% endif %}like"
            class="like button">
+<!-- обрати внимание на эти строчки в скрипте ниже. Они полуают инфу от тега a (data-id и data-action)-->
+<!--    //id: $(this).data('id'),
+        //action: $(this).data('action')-->
             {% if request.user not in users_like %}
             Like
             {% else %}
@@ -48,6 +51,9 @@
 <!----------------------------------endblock content------------------------->
 
 <!----------------------------------block domready------------------------->
+<!-- скрипт для лайков (редиректит на {# url 'images:like' #})
+отправляет пост запрос на {# url 'images:like' #} с полями id=...&action=...
+ прием это ajax запрос (в запрос добавляется специальный header) и request.is_ajax() == True -->
 {% block domready %}
   $('a.like').click(function(e){
     e.preventDefault();

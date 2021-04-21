@@ -8,6 +8,14 @@
 </div>
 {% endblock %}
 
+<!----------------------------------block domready------------------------->
+<!--
+очевидно, что //('#image-list').append(data) где #image-list это id для div, а
+data - это images подгружаемый нашем обрабочиком list_view на конкретной странице
+т.е. код js каким то образом делает get запрос на {# url 'images:list' #}
+с get параметром ?page=  (но его не видно)
+То есть там, где происходит //$('#image-list').append(data);
+вызывается наш обработик list_view благодаря ajax запросу с get параметром page-->
 {% block domready %}
   var page = 1;
   var empty_page = false;
@@ -30,3 +38,4 @@
     }
   });
 {% endblock %}
+<!----------------------------------endblock domready------------------------->
