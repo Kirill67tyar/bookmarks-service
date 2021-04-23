@@ -10,6 +10,7 @@ from django.urls import reverse_lazy
 
 from images.forms import ImageCreateModelForm
 from images.models import Image
+from actions.utils import create_action
 from common.decorators import ajax_required
 
 @login_required
@@ -20,6 +21,7 @@ def create_view(request):
             new_image = form.save(commit=False)
             new_image.user = request.user
             new_image.save()
+            create_action(request.user, 'Image bookmarked', new_image)
             messages.success(request, 'Image saving was successfully')
             return redirect(new_image.get_absolute_url())
     else:
@@ -76,6 +78,7 @@ def like_view(request):
             image = Image.objects.get(pk=image_id)
             if action == 'like':
                 image.users_like.add(request.user)
+                create_action(request.user, 'likes', image)
             else:
                 image.users_like.remove(request.user)
             return JsonResponse({'status': 'ok'})

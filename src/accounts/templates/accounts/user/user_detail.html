@@ -14,7 +14,7 @@
     {% endthumbnail %}
 </div>
 
-{% with total_followers=user.followers.count %}
+{% with total_followers=user.followers.count  %}
 <span class="count">
         <span class="total">
             {{ total_followers }}
@@ -24,16 +24,18 @@
 
 <!--user.followers.all вынести в отельную переменную-->
 {% if request.user.pk != user.pk %}
+{% with user_followers=user.followers.all %}
 <a href="#"
    data-id="{{ user.pk }}"
-   data-action="{% if request.user in user.followers.all %}un{% endif %}follow"
+   data-action="{% if request.user in user_followers %}un{% endif %}follow"
    class="follow button">
-    {% if request.user not in user.followers.all %}
+    {% if request.user not in user_followers %}
     Follow
     {% else %}
     Unfollow
     {% endif %}
 </a>
+{% endwith %}
 {% endif %}
 
 <div id="image-list" class="image-container">

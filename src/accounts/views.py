@@ -9,7 +9,8 @@ from django.views.decorators.http import require_POST
 
 from accounts.forms import LoginForm, RegisterModelForm, ProfileEditModelForm, UserEditModelForm
 from accounts.models import Profile, Contact
-
+from actions.models import Action
+from actions.utils import create_action
 from common.decorators import ajax_required
 
 
@@ -57,7 +58,15 @@ def login_view(request):
 # с помощью поля <input type="hidden" name="next" value="{{next}}"/> в html форме login
 @login_required
 def dashboard_view(request):
-    return render(request, 'accounts/dashboard.html', {'section': 'dashboard'})
+    actions = Action.objects.exclude(user=request.user)
+    following_ids = request.user.following.values_list('id', flat=True)
+    if following_ids:
+        actions = actions.filter(user_id__in=following_ids)
+    context = {
+        'section': 'dashboard',
+        'actions': actions.select_related('user', 'user__profile').prefetch_related('target')[:10],
+    }
+    return render(request, 'accounts/dashboard.html', context)
 
 
 def register_view(request):
@@ -68,6 +77,7 @@ def register_view(request):
             new_user = form.save(commit=False)
             new_user.set_password(cd['password'])
             Profile.objects.create(user=new_user)
+            create_action(new_user, 'Has created an account')
             new_user.save()
             return render(request, 'accounts/register_done.html', {'new_user': new_user,})
     else:
@@ -142,6 +152,7 @@ def user_follow_view(request):
             user = User.objects.get(pk=user_id)
             if action == 'follow':
                 Contact.objects.get_or_create(user_from=request.user, user_to=user)
+                create_action(request.user, 'is_following', user)
             else:
                 Contact.objects.filter(user_from=request.user, user_to=user).delete()
         except User.DoesNotExist:
