@@ -5,8 +5,8 @@
 <div class="action">
 
     <div class="images">
-        {% if user.photo %}
-        {% thumbnail user.profile.photo "80x80" crop="100%" as im %}
+        {% if profile.photo %}
+        {% thumbnail profile.photo "80x80" crop="100%" as im %}
         <a href="{{ user.get_absolute_url }}">
             <img src="{{ im.url }}" alt="{{user.username}}" class="item-img">
         </a>
@@ -52,5 +52,6 @@
             {% endif %}
         </p>
     </div>
+
 </div>
 {% endwith %}

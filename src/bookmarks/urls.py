@@ -58,7 +58,7 @@ if settings.DEBUG:
 
 # -----------------Что нужно делать, чтобы bookmarklet работал:
 
-# 1) заходишь в прогу ngok (C:\Users\User\Desktop\Job\ngrok-stable-windows-386)
+# 1) заходишь в прогу ngok (C:\Users\User\Desktop\Job\usefull_progs\ngrok-stable-windows-386)
 # 2) набираешь в консоли ngrok http 8000
 # 3) полуаешь нечтно такое:
 """

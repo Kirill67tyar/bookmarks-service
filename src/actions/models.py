@@ -33,3 +33,13 @@ class Action(models.Model):
 # django не создает столбец GenericForeignKey на уровне бд.
 # вместо этого будут сохраняться значения target_ct и target_id
 # GenericForeignKey - поле для обращения к его связанному объекту на основании его типа и ID
+
+# Короче структура этой модели не идеальна (читай, почему луше не использовать
+# GenericForeignKey). Но это видимо базовый синтаксис, когда мы ссылаемся на ContentType
+# 1) указываем ForeigenKey на ContentType
+# 2) объявляем поле PositiveIntegerField
+# 3) Связываем ForeignKey(на ContentType) и  PositiveIntegerField
+# с поммощью GenericForeignKey.
+# как это работает имею только догадки.
+# Конкретно не понятно - как GenericForeignKey разделяем на target_ct и target_id
+# то что мы ему передаем (а передаем мы всегда экземпляр модели)

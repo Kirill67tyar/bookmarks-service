@@ -21,7 +21,7 @@ def create_view(request):
             new_image = form.save(commit=False)
             new_image.user = request.user
             new_image.save()
-            create_action(request.user, 'Image bookmarked', new_image)
+            create_action(user=request.user, verb='Bookmarked image', target=new_image)
             messages.success(request, 'Image saving was successfully')
             return redirect(new_image.get_absolute_url())
     else:
@@ -94,6 +94,10 @@ def list_view(request):
     qs = Image.objects.all()#.filter(user=request.user)
     paginator = Paginator(qs, 8)
     num_page = request.GET.get('page')
+
+    # ненужная переменная, но как пример использования дополнительного столбца total_likes в модели Image
+    # с сигналами:
+    images_by_popularity = Image.objects.order_by('-total_likes')
     try:
         images = paginator.page(num_page)
     except PageNotAnInteger:
@@ -117,3 +121,16 @@ def list_view(request):
 
 def experiment(request):
     return JsonResponse({'cheking': 'it works'})
+
+
+
+def set_likes(request):
+    """
+    Эта функция нужна, т.к. мы сделади денормализацию и добавили поле total_likes в Image
+    Нам нужно было привести поле total_likes к актуальному знаению
+    """
+    qs = Image.objects.annotate(cnt=Count('users_like')).all()
+    for elem in qs:
+        elem.total_likes = elem.users_like.count()
+        elem.save()
+    return JsonResponse({'status': 'ok'})
