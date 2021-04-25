@@ -33,7 +33,7 @@ ALLOWED_HOSTS = [
     'mysite.com',
     'localhost',
     '127.0.0.1',
-    '375005324b60.ngrok.io',
+    '9a8419d646ac.ngrok.io',
 ]
 
 
@@ -219,7 +219,7 @@ INTERNAL_IPS = ['127.0.0.1',]
 THUMBNAIL_DEBUG = True
 
 
-# # Redis settings
-# REDIS_HOST = 'localhost'
-# REDIS_PORT = 6379
-# REDIS_DB = 0
+# Redis settings
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+REDIS_DB = 0

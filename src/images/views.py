@@ -4,15 +4,24 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_POST
-from django.db.models import Count
+from django.db.models import Count, F
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.urls import reverse_lazy
+from django.conf import settings
 
 from images.forms import ImageCreateModelForm
 from images.models import Image
 from actions.utils import create_action
 from common.decorators import ajax_required
 
+import redis
+
+# ---------------------------------
+# как было бы с redis
+r = redis.StrictRedis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
+# Здесь мы создаем постоянное соединение с Redis, чтобы не вызывать
+# его с обработчиком каждый раз
+# ---------------------------------
 @login_required
 def create_view(request):
     if request.method == 'POST':
@@ -37,6 +46,20 @@ def create_view(request):
 # обработчик из книги. Делает 9 SQL запросов (с sorl.thumbnail 10 и 9)
 def detail_view(request, id, slug):
     image = get_object_or_404(Image, pk=id, slug=slug)
+    image.views_count = F('views_count') + 1
+    image.save()
+    image.refresh_from_db()
+    # or
+    # image.update(views_count=F('views_count') + 1)
+    # ---------------------------------
+    # как было бы с redis
+    # views_count = r.incr(f'image:{image.pk}:views')
+    # метод incr - увелиивает значение на 1
+    # если такого клюа нет, то он будет создан со значением 1
+    # если есть ключ, то он увеличется на 1
+    # r.zincrby('image_ranking', image.pk, 1)
+    # а в строчке выше мы увеличили рейтин на 1
+    # ---------------------------------
     context = {
         'image': image,
     }
@@ -116,6 +139,27 @@ def list_view(request):
     else:
         template_name = 'images/image/list.html'
     return render(request, template_name=template_name, context=context)
+
+
+
+@login_required
+def image_ranking(request):
+    # ---------------------------------
+    # как было бы с redis
+    # используем метод zrange для доступа к сортированным элементам списка
+    # из redis (скорее всего какой-то тип данных, похожий на list
+    # с элементами внутри - сохраненными id)
+    # image_ranking - скорее всего то, что хранится в redis
+    # 0, -1 - от какого индекса и до какого
+    # desc=True - сортировка в убывающем порядке
+    # image_ranking = r.zrange('image_ranking', 0, -1, desc=True)[:10]
+    # image_ranking_ids = [int(id) for id in image_ranking]
+    # most_viewed = list(Image.objects.filter(pk__in=image_ranking_ids))
+    # most_viewed.sort(key=lambda x: image_ranking_ids.index(x.pk))
+    # ---------------------------------
+    # без redis:
+    most_viewed = Image.objects.order_by('-views_count')[:10]
+    return render(request, 'images/image/ranking.html', {'most_viewed': most_viewed,})
 
 
 

@@ -18,6 +18,7 @@ urlpatterns = [
     path('users/', user_list_view, name='user_list'),
     path('users/follow/', user_follow_view, name='user_follow'),
     path('users/<str:username>/', user_detail_view, name='user_detail'),
+    # может user_follow нужно перед user_detail потому что он follow в url будет воспринимать как username
 
     # Аутентификация из коробки ----------------------------------
     # path('login/', auth_views.LoginView.as_view(), name='login'),

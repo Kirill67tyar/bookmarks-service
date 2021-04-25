@@ -18,7 +18,8 @@ class Image(models.Model):
     created = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Создана')
     users_like = models.ManyToManyField(User, related_name='images_liked', verbose_name='Юзеры поставили лайк')
     total_likes = models.PositiveIntegerField(db_index=True, default=0)
-    
+    views_count = models.PositiveIntegerField(db_index=True, default=0)
+
     def __str__(self):
         return self.title
     

@@ -1,6 +1,6 @@
 (function(){
   var jquery_version = '3.3.1';
-  var site_url = 'https://375005324b60.ngrok.io/';
+  var site_url = 'https://9a8419d646ac.ngrok.io/';
   var static_url = site_url + 'static/';
   var min_width = 100;
   var min_height = 100;

@@ -21,8 +21,34 @@
 
 <h1>What happening, huh?</h1>
 <div id="action-list">
-    {% for action in actions %}
-    {% include "actions/action/detail.html" %}
-    {% endfor %}
+    {% include 'actions/action/actions_list.html' %}
+    {# for action in actions #}
+    {# include "actions/action/detail.html" #}
+    {# endfor #}
 </div>
 {% endblock %}
+<!----------------------------------block domready------------------------->
+
+{% block domready %}
+  var page = 1;
+  var empty_page = false;
+  var block_request = false;
+
+  $(window).scroll(function() {
+    var margin = $(document).height() - $(window).height() - 200;
+    if  ($(window).scrollTop() > margin && empty_page == false && block_request == false) {
+     block_request = true;
+      page += 1;
+      $.get('?page=' + page, function(data) {
+       if(data == '') {
+          empty_page = true;
+        }
+        else {
+          block_request = false;
+          $('#action-list').append(data);
+        }
+      });
+    }
+  });
+{% endblock %}
+<!----------------------------------endblock domready------------------------->
