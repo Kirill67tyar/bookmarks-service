@@ -11,6 +11,7 @@ from django.conf import settings
 
 from images.forms import ImageCreateModelForm
 from images.models import Image
+from images.utils import get_view_at_console
 from actions.utils import create_action
 from common.decorators import ajax_required
 
@@ -25,6 +26,7 @@ r = redis.StrictRedis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=set
 @login_required
 def create_view(request):
     if request.method == 'POST':
+        get_view_at_console(request.POST)
         form = ImageCreateModelForm(request.POST)
         if form.is_valid():
             new_image = form.save(commit=False)
@@ -32,6 +34,7 @@ def create_view(request):
             new_image.save()
             create_action(user=request.user, verb='Bookmarked image', target=new_image)
             messages.success(request, 'Image saving was successfully')
+
             return redirect(new_image.get_absolute_url())
     else:
         form = ImageCreateModelForm(data=request.GET)

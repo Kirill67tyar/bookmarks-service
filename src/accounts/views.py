@@ -13,7 +13,7 @@ from accounts.models import Profile, Contact
 from actions.models import Action
 from actions.utils import create_action
 from common.decorators import ajax_required
-
+from images.utils import get_view_at_console
 
 User = get_user_model()
 
@@ -41,6 +41,7 @@ def login_view(request):
                 if user:
                     if user.is_active:
                         login(request, user)
+                        # get_view_at_console(request.GET)
                         return redirect(reverse('accounts:dashboard'))
                     else:
                         return HttpResponse('User is not active')

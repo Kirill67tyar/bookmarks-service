@@ -43,3 +43,27 @@ def my_custom_slugify(text: str):
     for char in text:
         slug += cyrillic_letters.get(char, char)
     return slug
+
+
+
+
+def get_view_at_console(obj, delimiter='*', unpack=False, sep='\n'):
+    """
+
+    :param obj: объект который нужно вывести в консоль
+    :param delimiter: то каким символом разделять вывод в консоли сверху и снизу. Можно указать False
+    :param unpack: распаковывать эдемент на методы и атрибуты или нет (помещать в dir())
+    :param sep: по умолчанию равен '\n'
+    :return:
+    """
+
+    name = getattr(obj, '__name__') + ' :' if hasattr(obj, '__name__') else ''
+    if unpack:
+        args = [sep, name, *dir(obj), sep]
+    else:
+        args = [sep, name, obj, sep]
+    if delimiter:
+        delimiter = delimiter * 25 * 2
+        args.insert(1, delimiter)
+        args.insert(-1, delimiter)
+    return print(*args, sep='\n')
