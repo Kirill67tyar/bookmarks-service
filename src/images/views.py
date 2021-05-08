@@ -11,7 +11,7 @@ from django.conf import settings
 
 from images.forms import ImageCreateModelForm
 from images.models import Image
-from images.utils import get_view_at_console
+from images.utils import get_view_at_console, get_view_at_console1
 from actions.utils import create_action
 from common.decorators import ajax_required
 
@@ -99,6 +99,7 @@ def my_detail_view(request, id, slug):
 def like_view(request):
     image_id = request.POST.get('id')
     action = request.POST.get('action')
+    get_view_at_console1(request.headers, dictionary=1)
     if image_id and action:
         try:
             image = Image.objects.get(pk=image_id)
